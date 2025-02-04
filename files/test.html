@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Subir archivo</title>
+   </head>
+   <body>
+      <form id="uploadForm">
+         <input type="file" name="files" id="fileInput" multiple />
+         <button type="submit">Subir archivo</button>
+      </form>
+
+      <script>
+         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const files = Array.from(fileInput.files);
+
+            console.log(files);
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+               // Iterate over the FileList
+               formData.append('files', files[i]); // Append each File object individually
+            }
+            console.log('FormData enviado', formData);
+
+            try {
+               const response = await fetch('http://[::1]:8080/storage', {
+                  method: 'POST',
+                  body: formData,
+               });
+
+               if (response.ok) {
+                  const result = await response.json();
+                  console.log('Respuesta del servidor:', result);
+               } else {
+                  console.error('Error al subir el archivo:', response.statusText);
+               }
+            } catch (error) {
+               console.error('Error en la solicitud:', error);
+            }
+         });
+      </script>
+   </body>
+</html>

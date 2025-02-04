@@ -1,0 +1,17 @@
+services:
+  api:
+    container_name: dev-golang-server-storage
+    build:
+      context: ./infra/containers/development
+      dockerfile: Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      MAILER_EMAIL: ${MAILER_EMAIL}
+      MAILER_PASSWORD: ${MAILER_PASSWORD}
+      MAILER_SMTP_HOST: ${MAILER_SMTP_HOST}
+      MAILER_SMTP_PORT: ${MAILER_SMTP_PORT}
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/srv
+    command: sh -c 'go mod download && air'

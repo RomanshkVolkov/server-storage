@@ -1,0 +1,11 @@
+**.env*
+
+# tmp
+*tmp/*
+
+/cmd/tmp/*
+**/db/data*
+**.key
+**.crt
+
+*.prod.deployment.yml

@@ -1,0 +1,33 @@
+services:
+  STACK_PLACEHOLDER-web-service:
+    image: IMAGE_PLACEHOLDER
+    environment:
+      - JWT_SECRET="DEPLOY_JWT_SECRET_PLACEHOLDER"
+      - MAILER_EMAIL="DEPLOY_MAILER_EMAIL_PLACEHOLDER"
+      - MAILER_PASSWORD="DEPLOY_MAILER_PASSWORD_PLACEHOLDER"
+      - MAILER_SMTP_HOST="DEPLOY_MAILER_SMTP_HOST_PLACEHOLDER"
+      - MAILER_SMTP_PORT="DEPLOY_MAILER_SMTP_PORT_PLACEHOLDER"
+      # add more environment variables here same debug.sh and deployment.template.yml
+    volumes:
+      - file-storage:/srv/files
+    networks:
+      - caddy
+    deploy:
+      replicas: 1
+      labels:
+        caddy: CADDY_HOST_PLACEHOLDER
+        caddy.tls: CADDY_TLS_PLACEHOLDER
+        caddy.tls.on_demand:
+        caddy.reverse_proxy: "{{upstreams 8080}}" # important check same value on Dockerfile and PORT enviroment var
+
+volumes:
+  file-storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/deploy/files
+
+networks:
+  caddy:
+    external: true
